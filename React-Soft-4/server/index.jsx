@@ -53,18 +53,17 @@ app.post("/login", (req, res) => {
   )
 })
 
-SELECT u.idusuario, u.nombre, u.correo, u.usuario,(u.rol) AS idrol,(r.rol) AS rol FROM usuario u INNER JOIN rol r ON u.rol = r.idrol WHERE idusuario= $iduser
 
-app.get("/usuarios",(req,res)=>{
-    db.query('SELECT * FROM usuarios',
-    (err,result)=>{
-        if(err){
-            console.log(err);
-        }else{
-            res.send(result);
-        }
-    }
-    );
+app.get("/usuarios", (req, res) => {
+  db.query('SELECT u.id, u.Nombre, u.Correo, u.Usuario, r.rol FROM usuarios u INNER JOIN rol r ON u.rol = r.idrol',
+  (err, result) => {
+      if (err) {
+          console.log(err);
+          res.status(500).send('Error al obtener usuarios');
+      } else {
+          res.send(result);
+      }
+  });
 });
 
 app.put("/update", (req, res) => {
